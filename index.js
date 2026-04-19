@@ -1,10 +1,45 @@
 // console.log(cookies);
 
+// -------------------------------------
+// ----------- LOCAL STORAGE -----------
+// -------------------------------------
+
+function GetDailyCookie() {
+  cookieADeviner = localStorage.getItem("cookieADeviner");
+  var timeToday = new Date().getTime();
+  timeToday = timeToday - (timeToday % 86400000);
+
+  if (!cookieADeviner) {
+    setLocalStorageCookie(timeToday);
+  } else {
+    cookieADeviner = JSON.parse(cookieADeviner);
+    storageDate = cookieADeviner[0];
+    if (storageDate == timeToday) {
+      cookieADeviner = cookieADeviner[1];
+    } else {
+      setLocalStorageCookie(timeToday);
+    }
+  }
+}
+
+function setLocalStorageCookie(dateToday) {
+  cookieADeviner = pickRandomCookie(0, cookies.length);
+  localStorage.setItem(
+    "cookieADeviner",
+    JSON.stringify([dateToday, cookieADeviner]),
+  );
+}
+
+// ---------------------------------
+// ----------- VARIABLES -----------
+// ---------------------------------
+
 const winScreen = document.getElementById("winScreen");
 const inputSection = document.getElementById("inputSection");
 var gameWon = false;
 var yesterdayCookie;
 var winStreak = 0;
+let cookieADeviner = null;
 
 // Gender variables
 var genderArrayCD = [];
@@ -558,7 +593,7 @@ function initializeGame() {
 }
 
 function startGame() {
-  cookieADeviner = pickRandomCookie(0, cookies.length);
+  GetDailyCookie();
   clearTableau();
   alreadySearched = [];
   gameWon = false;
