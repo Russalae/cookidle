@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookidle</title>
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <nav>
+            <ul class="headerNav">
+                <li class="headerImg"><a href="https://www.cookierun-kingdom.com/en/" target="_blank"><img src="./assets/images/icons/cookieRunKingdomIcon.jpg" alt="cookieRunKingdomIcon"></a></li>
+                <li class="headerText"><a href="index.html">Daily mode</a></li>
+                <li class="headerText"><a href="indexInfinite.html">Infinite mode</a></li>
+                <li class="headerImg"><img src="./assets/images/icons/questionMark02.png" alt="?" onClick="showHowToPlay()"></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <img src="./assets/images/Logo01.png" alt="Logo Cookie Run" id="logo">
+
+        <div class="howToPlayParent hidden" id="howToPlayParent">
+            <div class="howToPlayScreen">
+                <div class="howToPlayQuitSection">
+                   <img src="./assets/images/icons/cross.png" alt="quitIcon" class="howToPlayQuit" onClick="hideHowToPlay()"> 
+                </div>
+                <div class="howToPlayIntro">
+                    <h3>How to play?</h3>
+                    <p>Welcome to Cookidle! Inspired by LoLdle and Wordle, your goal is to find who's today's cookie!
+                    <br> <br> In Daily Mode, the cookie changes every 24 hours.
+                    <br>In Infinite Mode, the cookie changes every time you find one. Your goal is to get the highest win streak! 
+                    <br><br>Color of the tiles changes depending on how close you are from today's cookie: 
+                    <br><span style="color: #08a127">Green</span> means the property is the same ;
+                    <br><span style="color: #dd850f">Orange</span> means the property is partially the same ;
+                    <br><span style="color: #b3100e">Red</span> means the property is not the same. 
+                    <br><br>Please note that Cookidle is exclusively for Cookie Run Kingdom.
+                    <br>Guests and special cookies are included!</p>
+                </div>
+                <div class="howToPlayProperties">
+                    <h3>Properties</h3>
+                    <p><span style="text-decoration: underline">Gender</span> 
+                    <br>Based on Cookie Run Kingdom's English translation.
+                    <br><span style="color: #ad661f">Possible values</span>: She, Her, He, Him, They, Them, It, Its
+                    <br><br><span style="text-decoration: underline">Role</span>
+                    <br>The cookie's role, their function in battle.
+                    <br><span style="color: #ad661f">Possible values</span>: Ambush, Bomber, Charge, Defense, Healing, Magic, Ranged, Support, BTS.
+                    <br><br><span style="text-decoration: underline">Position</span>
+                    <br>Where the cookie stands in a team.
+                    <br><span style="color: #ad661f">Possible values</span>: Front, Middle, Rear.
+                    <br><br><span style="text-decoration: underline">Element</span>
+                    <br>The attack type of the cookie. Some magic candies can add element to a cookie, they are included in the cookie's properties! 
+                    <br><span style="color: #ad661f">Possible values</span>: Light, Poison, Fire, Water, Earth, Ice, Electricity, Darkness, Wind, Steel, Grass, Chaos.
+                    <br><br><span style="text-decoration: underline">Rarity</span>
+                    <br>The rarity of the cookie. 
+                    <br><span style="color: #ad661f">Possible values</span>: Common, Rare, Special, Guest, Epic, Super Epic, Dragon, Legendary, Ancient, Beast, Witch.
+                    <br><br><span style="text-decoration: underline">Release</span>
+                    <br>The version the cookie was released.
+                    <br><span style="color: #ad661f">Possible values</span>: from 1.0 to 7.2</p>
+                </div>
+                <div class="howToPlayClues">
+                    <h3>Clues</h3>
+                    <p>In Daily mode, clues will help you find the cookie of the day!
+                    <br><br><span style="text-decoration: underline">Quote</span>
+                    <br>After 5 tries, you unlock the cookie's quote.
+                    <br>Each quote was chosen by hand to be not too obvious and can be from anywhere! 
+                    <br>For example, it can be a skill quote, a tree of wishes quote, a kingdom quote... really pretty much anything, except from story mode!
+                    <br><br><span style="text-decoration: underline">Skill</span>
+                    <br>After 10 tries, you unlock the cookie's skill. 
+                    <br>First, it will be rotated and in greyscale. 
+                    <br>After 15 tries, the skill will be the right way round.
+                    <br>After 20 tries, the skill will be in colors.</p>
+                </div>
+                <div class="howToPlayOutro">
+                    <p>If you got any questions, recommandations or pretty much any feedbacks, feel free to contact me! Links down below! 
+                    <br>Good luck and stay crispy!</p>
+                </div>
+                <div class="howToPlayContact">
+                    <div class="contactSocials">
+                        <div class="eachSocials">
+                            <a href="https://github.com/Russalae" target="_blank"><img src="./assets/images/socials/GithubLogo.png" alt="GithubLogo"></a>
+                            <p>Github</p>
+                        </div>
+                        <div class="eachSocials">
+                            <a href="https://bsky.app/profile/russalae.bsky.social" target="_blank"><img src="./assets/images/socials/BlueskyLogo.png" alt="BlueskyLogo"></a>
+                            <p>Bluesky</p>
+                        </div>
+                        <div class="eachSocials">
+                            <img src="./assets/images/socials/MailLogo.png" alt="MailLogo">
+                            <p>russalae.contact@gmail.com</p>
+                        </div>
+                        
+                        <!-- Ajouter Github + Mail + BlueSky  -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="helper">
+            <div class="helperBox">
+                <p>Paramètres</p>
+                <p>Streak</p>
+                <p>How to play</p>
+            </div>
+        </div> -->
+
+        <br>
+
+        <!-- <div class="intro">
+            <div class="introBox">
+                <img src="./assets/images/CookiesPic/SugarGnome.png" alt="Sugar Gnome profile picture">
+
+                <div class="introText">
+                    <h2>Guess the cookie!</h2>
+                    <h4>Daily mode</h4>
+                    <div class="introInfos">
+                        <p>Yesterday cookie was</p>
+                        <p id="yesterdayCookie"> Gingerbrave! </p>
+                        <p id="numberOfTries">0 tries</p>
+                    </div>
+                </div> -->
+                <!-- <div class="introClues">
+                    <p>Quote</p>
+                    <p>Skill</p>
+                    <p>Display Clue</p>
+                </div> -->
+            </div> 
+        </div>
+
+        <div class="introArea">
+            <div class="introT">
+                <div class="introBoxT">
+                    <img src="./assets/images/CookiesPic/SugarGnome.png" alt="Sugar Gnome profile picture">
+
+                    <div class="introTextT">
+                        <h2>Guess the cookie!</h2>
+                        <h4>Daily mode</h4>
+                        <div class="introInfos">
+                            <p>Yesterday cookie was</p>
+                            <p id="yesterdayCookie"> Gingerbrave! </p>
+                            
+                        </div>
+                    </div>
+                    
+                </div>  
+                <div class="cluesIntroT">
+                    <p id="winStreakDaily">Win streak : 0</p>
+                    <p id="numberOfTries">0 tries</p>
+
+                    <div class="cluesBoxT">
+                        <div class="smallCluesBoxT">
+                            <img src="./assets/images/icons/quoteIcon.png" alt="Quote Icon" id="quoteButton" class="blackAndWhite">
+                            <p id="quoteInTries">Quote in 5 tries</p>
+                        </div>
+                        <div class="smallCluesBoxT">
+                            <img src="./assets/images/icons/cookieCutter.png" alt="Cookie Cutter" id="skillButton" class="blackAndWhite">
+                            <p id="skillInTries">Skill in 10 tries</p>
+                        </div>
+                    </div>
+
+                    <div class="displayClues"> 
+                        <p id="displayCluesQuote" class="hidden">Allô l'indice</p>
+                        <img src="./assets/images/CookiesSkills/GingerbraveSkill.png" alt="cookieSkill" id="displayCluesSkill" class="hidden blackAndWhite rotated">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <br>
+
+        <div class="inputSection" id="inputSection">
+            <div class="inputBox">
+                <input type="search" 
+                id="typedCookie" 
+                placeholder="Enter cookie name..." 
+                oninput="rechercheCookie()" 
+                autocomplete="off">
+                <!-- <div id="result"> Mon résultat ici</div> -->
+                <button id="validCookie" onClick="verifyCookie()">&#10148;</button>
+                <datalist id="cookieResult">
+                </datalist>
+
+                <!-- <input type="submit" value="Valider"> -->
+            </div>
+        </div>
+
+        
+
+        <br>
+
+        <!-- <div class="testFlexParentHeader">
+            <div class="testFlexHeader">
+                <p class="testFlexText">Allô</p>
+                <p class="testFlexText">Alllô</p>
+                <p class="testFlexText">Allllô</p>
+                <p class="testFlexText">Alllllô</p>
+                <p class="testFlexText">Allllllô</p>
+                <p class="testFlexText">Alllllllô</p>
+                <p class="testFlexText">Alllllllô</p>
+            </div>
+        </div> --> 
+
+        <div class="absolute">
+            <div class="availableCookies hidden" id="availableCookies">
+            </div>
+        </div>
+        
+        <!-- <div class="resultatCookie">
+            <div class="resultatCookieLigne">
+                <img src="./assets/images/CookiesPic/FrostQueenCookie.png" class="resultatCookieImage">
+                <p class="resultatCookieTexte">She / Her</p>
+                <p class="resultatCookieTexte">Magic</p>
+                <p class="resultatCookieTexte">Middle</p>
+                <p class="resultatCookieTexte">Ice</p>
+                <p class="resultatCookieTexte">Legendary</p>
+                <p class="resultatCookieTexte">2021</p>
+
+            </div>
+        </div>    -->
+
+        <!-- <div class="flip-card" aria-pressed="false">
+        <div class="flip-card-inner">
+            <div class="flip-card-front" id="front" aria-hidden="false">
+            </div>
+            <div class="flip-card-back" aria-hidden="true" id="back">
+            <div class="sub-container">
+                <img src="./assets/images/CookiesPic/FrostQueenCookie.png" class="resultatCookieImage">
+            </div>
+            </div>
+        </div>
+        </div> -->
+
+        
+
+        <!-- <button onClick="flipCard()">retourne</button> -->
+
+        <br>
+
+        <div class="headerTableauCookiesParent" id="tableauCookies">
+            <div class="headerTableauCookies" id="headerTableauCookies">
+                    <p>Cookie</p>
+                    <!-- <p>Name</p> -->
+                    <p>Gender</p>
+                    <p>Role</p>
+                    <p>Position</p>
+                    <p>Element</p>
+                    <p>Rarity</p>
+                    <p>Release</p>
+            </div>
+
+            <br>
+
+            <div class="resultatCookieParent">
+                <div class="resultatCookie" id="resultatCookie">
+                </div>
+            </div> 
+        </div>
+
+        <div class="winSection hiddenFromScreen">
+            <div class="winScreen" id="winScreen">
+                <h2 id="didItText">You did it! :D</h2>
+                <div class="winScreenCookie" id="winScreenCookie">
+                    <div class="winScreenCookieImageDisplay">
+                        <img src="./assets/images/CookiesPic/SugarGnome.png" alt="Win Cookie Profile Pic" class="resultatCookieImage" id="winCookieImage">
+                    </div>
+                    <div class="winScreenCookieTextDisplay">
+                        <p id="itWasText">You found</p>
+                        <p id="winCookieName">Cookie name</p>
+                    </div>
+                </div>
+                <p id="winStreakDaily02">Win streak : 0</p>
+                <p id="foundInText">Found in 0 try</p>
+            </div>
+        </div>
+  </div>
+
+    </main>
+
+    <footer>
+        <div class="footer">  
+            <p>Cookidle - V1.0 - 2026
+            <br>
+            Cookie Run Kingdom © Devsisters Corporation</p>
+        </div>
+
+    </footer>
+
+
+    <script src="datacookies.js"></script>
+    <script src="index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    
+</body>
+</html>
