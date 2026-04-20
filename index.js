@@ -731,6 +731,10 @@ function winScreenInitialize(cookieADeviner) {
 function loseScreenInitialize(cookieADeviner) {
   winScreen.classList.remove("hidden");
 
+  winScreen.scrollIntoView({
+    behavior: "smooth",
+  });
+
   didItText.innerHTML = "Maybe next time!";
 
   winCookieImage.src =

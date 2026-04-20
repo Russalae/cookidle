@@ -3,6 +3,7 @@
 const winScreen = document.getElementById("winScreen");
 const inputSection = document.getElementById("inputSection");
 var winStreak = 0;
+var bestStreak = 0;
 var gameWon = false;
 
 // Gender variables
@@ -453,6 +454,7 @@ function clearSearchSection() {
 
 const displayTries = document.getElementById("numberOfTries");
 const displayStreak = document.getElementById("winStreak");
+const displayBestStreak = document.getElementById("bestStreak");
 var numberOfTries = 0;
 var maxTries = 5;
 
@@ -470,8 +472,8 @@ function updateTries(addTry) {
 // ---------------------------------------------
 
 function initializeGame() {
-  winStreak = 0;
   startGame(0);
+  winStreak = 0;
 }
 
 function startGame() {
@@ -481,6 +483,8 @@ function startGame() {
 
   numberOfTries = 0;
   displayTries.innerHTML = numberOfTries + "/" + maxTries + " tries";
+  displayBestStreak.innerHTML = "Best streak : " + bestStreak;
+  displayStreak.innerHTML = "Win streak : " + winStreak;
 
   winScreen.classList.add("hidden");
   inputSection.classList.remove("hidden");
@@ -501,42 +505,6 @@ function clearTableau() {
 
 initializeGame();
 
-// -----------------------------------
-// ----------- DAILY RESET -----------
-// -----------------------------------
-
-// function runAtSpecificTimeOfDay(hour, minutes, func) {
-//   const twentyFourHours = 86400000;
-//   const now = new Date();
-//   let eta_ms =
-//     new Date(
-//       now.getFullYear(),
-//       now.getMonth(),
-//       now.getDate(),
-//       hour,
-//       minutes,
-//       0,
-//       0,
-//     ).getTime() - now;
-//   if (eta_ms < 0) {
-//     eta_ms += twentyFourHours;
-//   }
-//   setTimeout(function () {
-//     //run once
-//     func();
-//     // run every 24 hours from now on
-//     setInterval(func, twentyFourHours);
-//   }, eta_ms);
-// }
-
-// runAtSpecificTimeOfDay(21, 35, () => {
-//   console.log("SALUT C'EST LE RESET");
-// });
-
-// function dailyReset() {
-//   console.log("Bonjour !");
-// }
-
 // ----------------------------------------------------
 // ----------- VICTOIRE / DEFAITE DU JOUEUR -----------
 // ----------------------------------------------------
@@ -548,6 +516,9 @@ const didItText = document.getElementById("didItText");
 const itWasText = document.getElementById("itWasText");
 const foundInText = document.getElementById("foundInText");
 const currentStreakText = document.getElementById("currentStreakText");
+const bestStreakTextWinScreen = document.getElementById(
+  "bestStreakTextWinScreen",
+);
 
 function winGame() {
   console.log("WOAH BRAVO C'EST GAGNE !!!!!!!!!!");
@@ -568,13 +539,16 @@ function confettis() {
 }
 
 function loseGame() {
-  console.log("LA HONTE TAS PERDU !!!!!!!!!!");
   inputSection.classList.add("hidden");
   loseScreenInitialize(cookieADeviner);
 }
 
 function winScreenInitialize(cookieADeviner) {
   winScreen.classList.remove("hidden");
+
+  if (winStreak > bestStreak) {
+    bestStreak = winStreak;
+  }
 
   winScreen.scrollIntoView({
     behavior: "smooth",
@@ -589,10 +563,15 @@ function winScreenInitialize(cookieADeviner) {
   winCookieName.innerHTML = cookieADeviner.nom;
   foundInText.innerHTML = "Found in " + numberOfTries + " tries";
   currentStreakText.innerHTML = "Current streak : " + winStreak;
+  bestStreakTextWinScreen.innerHTML = "Best streak : " + bestStreak;
 }
 
 function loseScreenInitialize(cookieADeviner) {
   winScreen.classList.remove("hidden");
+
+  winScreen.scrollIntoView({
+    behavior: "smooth",
+  });
 
   didItText.innerHTML = "Maybe next time!";
 
@@ -601,6 +580,11 @@ function loseScreenInitialize(cookieADeviner) {
 
   itWasText.innerHTML = "It was";
   winCookieName.innerHTML = cookieADeviner.nom;
+  foundInText.innerHTML = "Not found!";
+  currentStreakText.innerHTML = "Current streak : " + winStreak;
+  bestStreakTextWinScreen.innerHTML = "Best streak : " + bestStreak;
+
+  winStreak = 0;
 }
 
 function continueGame() {
