@@ -71,14 +71,18 @@ function getPlayerAlreadySearched() {
     localStorage.setItem("alreadySearched", JSON.stringify(alreadySearched));
   } else {
     alreadySearched = JSON.parse(alreadySearched);
-    alreadySearched.forEach((cookie) => {
-      cookies.forEach((cookieInData) => {
-        if (cookieInData.nom == cookie) {
-          createLigneCookie(cookieInData);
-          updateTries(1);
-        }
+    if (alreadySearched == null) {
+      alreadySearched = [];
+    } else {
+      alreadySearched.forEach((cookie) => {
+        cookies.forEach((cookieInData) => {
+          if (cookieInData.nom == cookie) {
+            createLigneCookie(cookieInData);
+            updateTries(1);
+          }
+        });
       });
-    });
+    }
   }
 }
 
@@ -95,6 +99,7 @@ const inputSection = document.getElementById("inputSection");
 var gameWon = false;
 var yesterdayCookie;
 var winStreak = 0;
+var alreadySearched = [];
 let cookieADeviner = null;
 var cookieFound = false;
 
@@ -681,7 +686,11 @@ function startGame() {
     "./assets/images/CookiesSkills/" + cookieADeviner.skill + ".png";
   displayCluesQuote.innerHTML = cookieADeviner.quote;
 
-  winStreakDailyText.innerHTML = "Win streak : " + winStreak;
+  if (winStreak == null) {
+    winStreakDailyText.innerHTML = "Win streak : 0";
+  } else {
+    winStreakDailyText.innerHTML = "Win streak : " + winStreak;
+  }
 
   winScreen.classList.add("hidden");
   inputSection.classList.remove("hidden");
@@ -734,7 +743,7 @@ function dailyReset() {
   cookieFound = false;
   setPlayerParticipation(cookieFound);
   clearTableau();
-  var alreadySearched = [];
+  alreadySearched = [];
   setPlayerAlreadySearched(alreadySearched);
   updateYesterdayCookie();
   initializeGame();
