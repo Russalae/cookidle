@@ -388,7 +388,7 @@ function rechercheCookie() {
 
   cookies.forEach((cookie, index) => {
     if (cookie.nom.toLowerCase().includes(inputBar.value.toLowerCase())) {
-      if (alreadySearched.includes(cookie.nom)) {
+      if (!alreadySearched || alreadySearched.includes(cookie.nom)) {
       } else {
         tempArray.push(cookie.nom);
         updateAvailableCookies(cookie);
