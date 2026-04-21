@@ -50,7 +50,6 @@ function pickRandomCookie(min, max) {
 
   // Je link le nombre au cookie de la database
   var cookieADeviner = cookies[randomCookieIndex];
-  console.log("Le cookie c'est : " + cookieADeviner.nom);
 
   return cookieADeviner;
 }
@@ -521,7 +520,6 @@ const bestStreakTextWinScreen = document.getElementById(
 );
 
 function winGame() {
-  console.log("WOAH BRAVO C'EST GAGNE !!!!!!!!!!");
   confettis();
   inputSection.classList.add("hidden");
   winScreenInitialize(cookieADeviner);
@@ -591,7 +589,3 @@ function continueGame() {
   clearTableau();
   startGame(1);
 }
-
-// -----------------------------------------------------
-// ----------- TEST TEST TEST TEST TEST TEST -----------
-// -----------------------------------------------------

@@ -1,10 +1,10 @@
-// console.log(cookies);
-
 // -------------------------------------
 // ----------- LOCAL STORAGE -----------
 // -------------------------------------
 
-function GetDailyCookie() {
+// Get Daily Cookie : the cookie wont change for the player everytime they refresh the page
+
+function getDailyCookie() {
   cookieADeviner = localStorage.getItem("cookieADeviner");
   var timeToday = new Date().getTime();
   timeToday = timeToday - (timeToday % 86400000);
@@ -30,6 +30,62 @@ function setLocalStorageCookie(dateToday) {
   );
 }
 
+// Get Player Win Streak : keep win streak through the days
+
+function getPlayerWinStreak() {
+  winStreak = localStorage.getItem("winStreak");
+
+  if (!winStreak) {
+    localStorage.setItem("winStreak", JSON.stringify(winStreak));
+  } else {
+    winStreak = JSON.parse(winStreak);
+  }
+}
+
+function setPlayerWinStreak(winStreak) {
+  localStorage.setItem("winStreak", JSON.stringify(winStreak));
+}
+
+// Get Player Participation : if they already have played, won't make them play again
+
+function getPlayerParticipation() {
+  cookieFound = localStorage.getItem("cookieFound");
+
+  if (!cookieFound) {
+    localStorage.setItem("cookieFound", JSON.stringify(cookieFound));
+  } else {
+    cookieFound = JSON.parse(cookieFound);
+  }
+}
+
+function setPlayerParticipation(cookieFound) {
+  localStorage.setItem("cookieFound", JSON.stringify(cookieFound));
+}
+
+// Get Player Cookies : if they searched cookies, keep them in memories for today
+
+function getPlayerAlreadySearched() {
+  alreadySearched = localStorage.getItem("alreadySearched");
+
+  if (!alreadySearched) {
+    localStorage.setItem("alreadySearched", JSON.stringify(alreadySearched));
+  } else {
+    alreadySearched = JSON.parse(alreadySearched);
+    alreadySearched.forEach((cookie) => {
+      cookies.forEach((cookieInData) => {
+        if (cookieInData.nom == cookie) {
+          createLigneCookie(cookieInData);
+          updateTries(1);
+        }
+      });
+    });
+  }
+}
+
+function setPlayerAlreadySearched(alreadySearched) {
+  localStorage.setItem("alreadySearched", JSON.stringify(alreadySearched));
+}
+
 // ---------------------------------
 // ----------- VARIABLES -----------
 // ---------------------------------
@@ -40,6 +96,7 @@ var gameWon = false;
 var yesterdayCookie;
 var winStreak = 0;
 let cookieADeviner = null;
+var cookieFound = false;
 
 // Gender variables
 var genderArrayCD = [];
@@ -321,7 +378,6 @@ const arrayCookies = document.getElementById("resultatCookie");
 const availableCookies = document.getElementById("availableCookies");
 
 var tempArray = [];
-var alreadySearched = [];
 
 function rechercheCookie() {
   // result.innerHTML = inputBar.value;
@@ -391,7 +447,7 @@ function verifyCookie() {
       if (alreadySearched.includes(cookie.nom)) {
       } else {
         createLigneCookie(cookie);
-        inputBar.value = "";
+        setPlayerCookies(playerCookies);
       }
     }
   });
@@ -402,8 +458,12 @@ function createLigneCookie(cookieRentré) {
     gameWon = true;
   }
 
-  alreadySearched.push(cookieRentré.nom);
-  updateTries(1);
+  if (alreadySearched.includes(cookieRentré.nom)) {
+  } else {
+    alreadySearched.push(cookieRentré.nom);
+    updateTries(1);
+    setPlayerAlreadySearched(alreadySearched);
+  }
 
   const ligneCookie = document.createElement("div");
   ligneCookie.classList.add("resultatCookieLigne");
@@ -488,6 +548,7 @@ function clearSearchSection() {
 const displayTries = document.getElementById("numberOfTries");
 const displayCluesQuote = document.getElementById("displayCluesQuote");
 const displayCluesSkill = document.getElementById("displayCluesSkill");
+const winStreakDailyText = document.getElementById("winStreakDaily");
 const quoteButton = document.getElementById("quoteButton");
 const skillButton = document.getElementById("skillButton");
 const quoteInTries = document.getElementById("quoteInTries");
@@ -589,16 +650,20 @@ function normalSkillColorUnlock() {
 // ---------------------------------------------
 
 function initializeGame() {
-  startGame(0);
+  if (cookieFound) {
+    // Faire la sauvegarde de rangs
+  } else {
+    startGame(0);
+  }
 }
 
 function startGame() {
-  GetDailyCookie();
-  clearTableau();
-  alreadySearched = [];
+  getDailyCookie();
+  getPlayerWinStreak();
+  getPlayerParticipation();
+  getPlayerAlreadySearched();
   gameWon = false;
 
-  numberOfTries = 0;
   quoteCountdown = 5;
   skillCountdown = 10;
   displayTries.innerHTML = numberOfTries + " tries";
@@ -615,6 +680,8 @@ function startGame() {
   displayCluesSkill.src =
     "./assets/images/CookiesSkills/" + cookieADeviner.skill + ".png";
   displayCluesQuote.innerHTML = cookieADeviner.quote;
+
+  winStreakDailyText.innerHTML = "Win streak : " + winStreak;
 
   winScreen.classList.add("hidden");
   inputSection.classList.remove("hidden");
@@ -664,8 +731,14 @@ runAtSpecificTimeOfDay(0, 0, () => {
 });
 
 function dailyReset() {
+  cookieFound = false;
+  setPlayerParticipation(cookieFound);
+  clearTableau();
+  var alreadySearched = [];
+  setPlayerAlreadySearched(alreadySearched);
   updateYesterdayCookie();
   initializeGame();
+  numberOfTries = 0;
 }
 
 function updateYesterdayCookie() {
@@ -683,7 +756,6 @@ const winCookieImage = document.getElementById("winCookieImage");
 const didItText = document.getElementById("didItText");
 const itWasText = document.getElementById("itWasText");
 const foundInText = document.getElementById("foundInText");
-const winStreakDailyText = document.getElementById("winStreakDaily");
 const winStreakDailyText02 = document.getElementById("winStreakDaily02");
 
 function winGame() {
@@ -691,6 +763,9 @@ function winGame() {
   inputSection.classList.add("hidden");
   winScreenInitialize(cookieADeviner);
   winStreak += 1;
+  setPlayerWinStreak(winStreak);
+  cookieFound = true;
+  setPlayerParticipation(cookieFound);
   winStreakDailyText.innerHTML = "Win streak : " + winStreak;
   winStreakDailyText02.innerHTML = "Win streak : " + winStreak;
 }
@@ -748,7 +823,3 @@ function continueGame() {
   clearTableau();
   startGame(1);
 }
-
-// -----------------------------------------------------
-// ----------- TEST TEST TEST TEST TEST TEST -----------
-// -----------------------------------------------------
