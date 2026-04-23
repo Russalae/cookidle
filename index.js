@@ -30,6 +30,22 @@ function setLocalStorageCookie(dateToday) {
   );
 }
 
+// Get First Time : see if that's the first time the player launches the game today (patch search issues)
+
+function getPlayerFirstTime() {
+  firstTime = localStorage.getItem("firstTime");
+
+  if (!firstTime) {
+    localStorage.setItem("firstTime", JSON.stringify(firstTime));
+  } else {
+    firstTime = JSON.parse(firstTime);
+  }
+}
+
+function setPlayerFirstTime(firstTime) {
+  localStorage.setItem("firstTime", JSON.stringify(firstTime));
+}
+
 // Get Player Win Streak : keep win streak through the days
 
 function getPlayerWinStreak() {
@@ -71,22 +87,15 @@ function getPlayerAlreadySearched() {
     localStorage.setItem("alreadySearched", JSON.stringify(alreadySearched));
   } else {
     alreadySearched = JSON.parse(alreadySearched);
-    if (alreadySearched == null) {
-      alreadySearched = [];
-    } else {
-      alreadySearched.forEach((cookie) => {
-        cookies.forEach((cookieInData) => {
-          if (cookieInData.nom == cookie) {
-            createLigneCookie(cookieInData);
-            updateTries(1);
-          }
-        });
-      });
-    }
   }
 }
 
 function setPlayerAlreadySearched(alreadySearched) {
+  localStorage.setItem("alreadySearched", JSON.stringify(alreadySearched));
+}
+
+function emptyPlayerAlreadySearched() {
+  alreadySearched = [];
   localStorage.setItem("alreadySearched", JSON.stringify(alreadySearched));
 }
 
@@ -102,6 +111,8 @@ var winStreak = 0;
 var alreadySearched = [];
 let cookieADeviner = null;
 var cookieFound = false;
+var firstTime = true;
+var noConfettis = false;
 
 // Gender variables
 var genderArrayCD = [];
@@ -151,6 +162,10 @@ function pickRandomCookie(min, max) {
   return cookieADeviner;
 }
 
+// --------------------------------------------
+// ----------- COMPARER LES COOKIES -----------
+// --------------------------------------------
+
 function splitGenderCookieADeviner(genderCD) {
   genderArrayCD = genderCD.split(" / ");
 
@@ -183,11 +198,8 @@ function splitElementCookieJoueur(elementCJ) {
   return elementsArrayCJ;
 }
 
-// --------------------------------------------
-// ----------- COMPARER LES COOKIES -----------
-// --------------------------------------------
-
 function compareCookies(cookieADeviner, cookieJoueur, ligneCookie) {
+  console.log("Je compare pour " + cookieJoueur.nom);
   // Gender
   genderFound = false;
 
@@ -311,68 +323,6 @@ function compareCookies(cookieADeviner, cookieJoueur, ligneCookie) {
 }
 
 // --------------------------------------------
-// ------ DISPLAY DE LA LISTE DE COOKIES ------
-// --------------------------------------------
-
-function fillMyDiv() {
-  const arrayCookies = document.getElementById("resultatCookie");
-
-  cookies.forEach((element) => {
-    const ligneCookie = document.createElement("div");
-    ligneCookie.classList.add("resultatCookieLigne");
-    arrayCookies.appendChild(ligneCookie);
-
-    // IMAGES
-
-    const imgCookie = document.createElement("img");
-    imgCookie.src = "./assets/images/CookiesPic/" + element.img + ".png";
-    imgCookie.classList.add("resultatCookieImage");
-    ligneCookie.appendChild(imgCookie);
-
-    // NOM
-
-    // const nomCookie = document.createElement("p");
-    // nomCookie.innerHTML = element.nom;
-    // ligneCookie.appendChild(nomCookie);
-
-    // ROLE
-
-    const roleCookie = document.createElement("p");
-    roleCookie.innerHTML = element.role;
-    roleCookie.classList.add("resultatCookieRole");
-    ligneCookie.appendChild(roleCookie);
-
-    // POSITION
-
-    const positionCookie = document.createElement("p");
-    positionCookie.innerHTML = element.position;
-    positionCookie.classList.add("resultatCookiePosition");
-    ligneCookie.appendChild(positionCookie);
-
-    // ELEMENT
-
-    const elementCookie = document.createElement("p");
-    elementCookie.innerHTML = element.element;
-    elementCookie.classList.add("resultatCookieElement");
-    ligneCookie.appendChild(elementCookie);
-
-    // RARETE
-
-    const rarityCookie = document.createElement("p");
-    rarityCookie.innerHTML = element.rarity;
-    rarityCookie.classList.add("resultatCookieRarity");
-    ligneCookie.appendChild(rarityCookie);
-
-    // RELEASE
-
-    const releaseCookie = document.createElement("p");
-    releaseCookie.innerHTML = element.release;
-    releaseCookie.classList.add("resultatCookieRelease");
-    ligneCookie.appendChild(releaseCookie);
-  });
-}
-
-// --------------------------------------------
 // ----------- RECHERCHE DE COOKIES -----------
 // --------------------------------------------
 
@@ -385,16 +335,22 @@ const availableCookies = document.getElementById("availableCookies");
 var tempArray = [];
 
 function rechercheCookie() {
+  console.log("recherche de cookies en cours");
   // result.innerHTML = inputBar.value;
 
   tempArray = [];
   cookieResult.replaceChildren();
   clearAvailableCookies();
+  if (firstTime == true) {
+    alreadySearched = [];
+  }
 
   cookies.forEach((cookie, index) => {
     if (cookie.nom.toLowerCase().includes(inputBar.value.toLowerCase())) {
       if (!alreadySearched || alreadySearched.includes(cookie.nom)) {
+        console.log("t'es pas censé apparaitre");
       } else {
+        console.log("toi t'es censé apparaitre");
         tempArray.push(cookie.nom);
         updateAvailableCookies(cookie);
       }
@@ -407,6 +363,7 @@ function rechercheCookie() {
 }
 
 function updateSearchCookies() {
+  console.log("j'update le search cookies");
   tempArray.forEach((element) => {
     const resultatRechercheCookie = document.createElement("option");
     resultatRechercheCookie.innerHTML = element;
@@ -415,6 +372,7 @@ function updateSearchCookies() {
 }
 
 function updateAvailableCookies(cookie) {
+  console.log("et j'update les available cookies");
   availableCookies.classList.remove("hidden");
 
   const ligneAvailableCookies = document.createElement("div");
@@ -459,6 +417,7 @@ function verifyCookie() {
 }
 
 function createLigneCookie(cookieRentré) {
+  console.log("je fais la ligne pour " + cookieRentré.nom);
   if (cookieADeviner.nom == cookieRentré.nom) {
     gameWon = true;
   }
@@ -468,6 +427,8 @@ function createLigneCookie(cookieRentré) {
     alreadySearched.push(cookieRentré.nom);
     updateTries(1);
     setPlayerAlreadySearched(alreadySearched);
+    firstTime = false;
+    setPlayerFirstTime(firstTime);
   }
 
   const ligneCookie = document.createElement("div");
@@ -667,6 +628,7 @@ function startGame() {
   getPlayerWinStreak();
   getPlayerParticipation();
   getPlayerAlreadySearched();
+  getPlayerFirstTime();
   gameWon = false;
 
   quoteCountdown = 5;
@@ -740,11 +702,11 @@ runAtSpecificTimeOfDay(0, 0, () => {
 });
 
 function dailyReset() {
+  console.log("reset");
   cookieFound = false;
   setPlayerParticipation(cookieFound);
   clearTableau();
-  alreadySearched = [];
-  setPlayerAlreadySearched(alreadySearched);
+  emptyPlayerAlreadySearched();
   updateYesterdayCookie();
   initializeGame();
   numberOfTries = 0;
@@ -768,7 +730,10 @@ const foundInText = document.getElementById("foundInText");
 const winStreakDailyText02 = document.getElementById("winStreakDaily02");
 
 function winGame() {
-  confettis();
+  console.log("c'est gagné ! C'est " + cookieADeviner.nom);
+  if (noConfettis == false) {
+    confettis();
+  }
   inputSection.classList.add("hidden");
   winScreenInitialize(cookieADeviner);
   winStreak += 1;
@@ -780,6 +745,7 @@ function winGame() {
 }
 
 function confettis() {
+  console.log("je suis dans le confetti");
   var myConfetti = confetti.create(canvas, {
     resize: true,
     useWorker: true,
@@ -796,6 +762,7 @@ function loseGame() {
 }
 
 function winScreenInitialize(cookieADeviner) {
+  console.log("J'initialise le win screen pour " + cookieADeviner.nom);
   winScreen.classList.remove("hidden");
 
   winScreen.scrollIntoView({
@@ -832,3 +799,26 @@ function continueGame() {
   clearTableau();
   startGame(1);
 }
+
+// ------------------------------------------------
+// ----------- ALREADY SEARCHED COOKIES -----------
+// ------------------------------------------------
+
+function refreshCreateLigne() {
+  noConfettis = false;
+  if (alreadySearched == null) {
+    alreadySearched = [];
+  } else {
+    alreadySearched.forEach((cookie) => {
+      cookies.forEach((cookieInData) => {
+        if (cookieInData.nom == cookie) {
+          noConfettis = true;
+          createLigneCookie(cookieInData);
+          updateTries(1);
+        }
+      });
+    });
+  }
+}
+
+refreshCreateLigne();
