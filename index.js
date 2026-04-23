@@ -199,7 +199,6 @@ function splitElementCookieJoueur(elementCJ) {
 }
 
 function compareCookies(cookieADeviner, cookieJoueur, ligneCookie) {
-  console.log("Je compare pour " + cookieJoueur.nom);
   // Gender
   genderFound = false;
 
@@ -335,9 +334,6 @@ const availableCookies = document.getElementById("availableCookies");
 var tempArray = [];
 
 function rechercheCookie() {
-  console.log("recherche de cookies en cours");
-  // result.innerHTML = inputBar.value;
-
   tempArray = [];
   cookieResult.replaceChildren();
   clearAvailableCookies();
@@ -348,9 +344,7 @@ function rechercheCookie() {
   cookies.forEach((cookie, index) => {
     if (cookie.nom.toLowerCase().includes(inputBar.value.toLowerCase())) {
       if (!alreadySearched || alreadySearched.includes(cookie.nom)) {
-        console.log("t'es pas censé apparaitre");
       } else {
-        console.log("toi t'es censé apparaitre");
         tempArray.push(cookie.nom);
         updateAvailableCookies(cookie);
       }
@@ -358,12 +352,9 @@ function rechercheCookie() {
   });
 
   updateSearchCookies();
-
-  // result.innerHTML = tempArray;
 }
 
 function updateSearchCookies() {
-  console.log("j'update le search cookies");
   tempArray.forEach((element) => {
     const resultatRechercheCookie = document.createElement("option");
     resultatRechercheCookie.innerHTML = element;
@@ -372,7 +363,6 @@ function updateSearchCookies() {
 }
 
 function updateAvailableCookies(cookie) {
-  console.log("et j'update les available cookies");
   availableCookies.classList.remove("hidden");
 
   const ligneAvailableCookies = document.createElement("div");
@@ -417,7 +407,6 @@ function verifyCookie() {
 }
 
 function createLigneCookie(cookieRentré) {
-  console.log("je fais la ligne pour " + cookieRentré.nom);
   if (cookieADeviner.nom == cookieRentré.nom) {
     gameWon = true;
   }
@@ -702,7 +691,6 @@ runAtSpecificTimeOfDay(0, 0, () => {
 });
 
 function dailyReset() {
-  console.log("reset");
   cookieFound = false;
   setPlayerParticipation(cookieFound);
   clearTableau();
@@ -730,7 +718,6 @@ const foundInText = document.getElementById("foundInText");
 const winStreakDailyText02 = document.getElementById("winStreakDaily02");
 
 function winGame() {
-  console.log("c'est gagné ! C'est " + cookieADeviner.nom);
   if (noConfettis == false) {
     confettis();
   }
@@ -745,7 +732,6 @@ function winGame() {
 }
 
 function confettis() {
-  console.log("je suis dans le confetti");
   var myConfetti = confetti.create(canvas, {
     resize: true,
     useWorker: true,
@@ -762,7 +748,6 @@ function loseGame() {
 }
 
 function winScreenInitialize(cookieADeviner) {
-  console.log("J'initialise le win screen pour " + cookieADeviner.nom);
   winScreen.classList.remove("hidden");
 
   winScreen.scrollIntoView({
@@ -812,7 +797,10 @@ function refreshCreateLigne() {
     alreadySearched.forEach((cookie) => {
       cookies.forEach((cookieInData) => {
         if (cookieInData.nom == cookie) {
-          noConfettis = true;
+          if (cookie == cookieADeviner.nom) {
+            noConfettis = true;
+            winStreak = winStreak - 1;
+          }
           createLigneCookie(cookieInData);
           updateTries(1);
         }
