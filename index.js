@@ -94,11 +94,6 @@ function setPlayerAlreadySearched(alreadySearched) {
   localStorage.setItem("alreadySearched", JSON.stringify(alreadySearched));
 }
 
-function emptyPlayerAlreadySearched() {
-  alreadySearched = [];
-  localStorage.setItem("alreadySearched", JSON.stringify(alreadySearched));
-}
-
 // ---------------------------------
 // ----------- VARIABLES -----------
 // ---------------------------------
@@ -694,7 +689,8 @@ function dailyReset() {
   cookieFound = false;
   setPlayerParticipation(cookieFound);
   clearTableau();
-  emptyPlayerAlreadySearched();
+  alreadySearched = [];
+  setPlayerAlreadySearched(alreadySearched);
   updateYesterdayCookie();
   initializeGame();
   numberOfTries = 0;
@@ -810,3 +806,4 @@ function refreshCreateLigne() {
 }
 
 refreshCreateLigne();
+dailyReset();
