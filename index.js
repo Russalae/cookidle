@@ -806,4 +806,3 @@ function refreshCreateLigne() {
 }
 
 refreshCreateLigne();
-dailyReset();
